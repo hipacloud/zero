@@ -27,6 +27,9 @@ class RpcClient:
     def echo(self, msg: str) -> str:
         return self._zero_client.call("echo", msg)
         
+    def decorated_echo(self, msg: str) -> str:
+        return self._zero_client.call("decorated_echo", None)
+        
     def hello_world(self, ) -> str:
         return self._zero_client.call("hello_world", None)
         

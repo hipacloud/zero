@@ -1,13 +1,28 @@
 import time
 import typing
+from functools import wraps
 from multiprocessing import Process
 
 import jwt
 import pytest
+
 from zero import ZeroServer
 
 
+def decorator(f):
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        return f(*args, **kwargs)
+
+    return wrapper
+
+
 async def echo(msg: str) -> str:
+    return msg
+
+
+@decorator
+async def decorated_echo(msg: str) -> str:
     return msg
 
 
@@ -40,6 +55,7 @@ def echo_union(msg: typing.Union[int, str]) -> typing.Union[int, str]:
 def server():
     app = ZeroServer()
     app.register_rpc(echo)
+    app.register_rpc(decorated_echo)
     app.register_rpc(hello_world)
     app.register_rpc(decode_jwt)
     app.register_rpc(sum_list)

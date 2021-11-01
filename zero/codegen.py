@@ -53,7 +53,8 @@ class RpcClient:
         return self._rpc_return_type_map[func_name].__name__
 
     def get_function_str(self, func_name: str):
-        return inspect.getsourcelines(self._rpc_router[func_name])[0][0].split("(", 1)[1].replace("\n", "")
+        source_lines = inspect.getsourcelines(self._rpc_router[func_name])[0]
+        return [line for line in source_lines if not line.startswith("@")][0].split("(", 1)[1].replace("\n", "")
 
     def generate_data_classes(self):  # pragma: no cover
         # TODO: next target, add pydantic support
